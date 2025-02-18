@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:,"> <!-- favicon hatasını önler -->
+</head>
+<body>
+
+<div class="container">
+    <h1>Welcome, User</h1>
+
+    <div class="card-container">
+        <div class="card">
+            <h2>Discover New Restaurants</h2>
+            <button id="view-restaurants-button" class="btn btn-primary">View All Restaurants</button>
+        </div>
+
+        <div class="card">
+            <h2>Your Favorite Restaurants</h2>
+            <button id="view-favorites-button" class="btn btn-warning">View Favorites</button>
+        </div>
+
+        <div class="card">
+            <h2>Special Offers</h2>
+            <p>Check out exclusive discounts at your favorite restaurants!</p>
+            <button id="see-offers-button" class="btn btn-success">See Offers</button>
+        </div>
+
+        <div class="card">
+            <h2>Account Settings</h2>
+            <button id="logout-button" class="btn btn-danger">Logout</button>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript Dosyasını Bağla -->
+<script src="dashboard.js" defer></script>
+</body>
+</html>

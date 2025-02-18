@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Menu</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 700px;
+        }
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+        .delete-button {
+            background-color: #dc3545;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .delete-button:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-5">
+    <h1 class="text-center">Manage Your Menu</h1>
+
+    <!-- Menü Ekleme Kartı -->
+    <div class="card mt-4">
+        <div class="card-body">
+            <h4 class="card-title">Add a New Dish</h4>
+            <div class="mb-3">
+                <label class="form-label">Dish Name</label>
+                <input type="text" id="dish-name" class="form-control" placeholder="Enter dish name">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Price ($)</label>
+                <input type="number" id="dish-price" class="form-control" placeholder="Enter price">
+            </div>
+            <button id="add-dish-button" class="btn btn-primary w-100">Add Dish</button>
+        </div>
+    </div>
+
+    <!-- Menü Listesi Kartı -->
+    <div class="card mt-4">
+        <div class="card-body">
+            <h4 class="card-title">Your Menu</h4>
+            <div id="menu-list">
+                <p class="text-muted">Loading menu items...</p>
+            </div>
+        </div>
+    </div>
+
+    <button id="back-button" class="btn btn-secondary mt-3 w-100">Back to Dashboard</button>
+</div>
+
+<!-- Firebase & Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    var firebaseConfig = {
+        apiKey: "AIzaSyBvfgjOeBBU58vav3vTG_mgtpJwNoGOXuc",
+        authDomain: "eataboutown-e050e.firebaseapp.com",
+        projectId: "eataboutown-e050e",
+        storageBucket: "eataboutown-e050e.appspot.com",
+        messagingSenderId: "1013622079742",
+        appId: "1:1013622079742:web:22b54d500a7c262f55a5af"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    var auth = firebase.auth();
+    var db = firebase.firestore();
+    var currentUser;
+
+    auth.onAuthStateChanged(function(user) {
+        if (user) {
+            currentUser = user;
+            loadMenu();
+        } else {
+            window.location.href = "restoran-giris.html";
+        }
+    });
+
+    function loadMenu() {
+        var menuList = document.getElementById("menu-list");
+        menuList.innerHTML = "<p class='text-muted'>Loading menu items...</p>";
+
+        db.collection("restaurants").doc(currentUser.uid).collection("menu").get().then(function(querySnapshot) {
+            menuList.innerHTML = "";
+            if (querySnapshot.empty) {
+                menuList.innerHTML = "<p class='text-muted'>No menu items yet.</p>";
+            } else {
+                querySnapshot.forEach(function(doc) {
+                    var dish = doc.data();
+                    var dishElement = document.createElement("div");
+                    dishElement.classList.add("menu-item");
+                    dishElement.innerHTML = `
+                        <span><strong>${dish.name}</strong> - $${dish.price.toFixed(2)}</span>
+                        <button class="delete-button" data-id="${doc.id}">Delete</button>
+                    `;
+                    menuList.appendChild(dishElement);
+                });
+
+                document.querySelectorAll(".delete-button").forEach(button => {
+                    button.addEventListener("click", function() {
+                        var dishId = this.getAttribute("data-id");
+                        deleteDish(dishId);
+                    });
+                });
+            }
+        });
+    }
+
+    document.getElementById("add-dish-button").addEventListener("click", function() {
+        var dishName = document.getElementById("dish-name").value;
+        var dishPrice = document.getElementById("dish-price").value;
+
+        if (dishName && dishPrice) {
+            db.collection("restaurants").doc(currentUser.uid).collection("menu").add({
+                name: dishName,
+                price: parseFloat(dishPrice)
+            }).then(function() {
+                alert("Dish added successfully!");
+                loadMenu();
+                document.getElementById("dish-name").value = "";
+                document.getElementById("dish-price").value = "";
+            }).catch(function(error) {
+                console.error("Error adding dish: ", error);
+            });
+        } else {
+            alert("Please enter a dish name and price.");
+        }
+    });
+
+    function deleteDish(dishId) {
+        db.collection("restaurants").doc(currentUser.uid).collection("menu").doc(dishId).delete().then(function() {
+            alert("Dish deleted successfully!");
+            loadMenu();
+        }).catch(function(error) {
+            console.error("Error deleting dish: ", error);
+        });
+    }
+
+    document.getElementById("back-button").addEventListener("click", function() {
+        window.location.href = "restaurant-dashboard.html";
+    });
+});
+</script>
+
+</body>
+</html>

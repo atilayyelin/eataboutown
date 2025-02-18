@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Menu</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body { background-color: #f8f9fa; }
+        .container { max-width: 800px; }
+        .card { border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
+        .menu-item { padding: 10px; border-bottom: 1px solid #ddd; background: white; border-radius: 8px; margin-bottom: 10px; }
+        .back-button { margin-bottom: 20px; font-size: 18px; }
+    </style>
+</head>
+<body>
+
+<div class="container mt-5">
+    <button id="back-button" class="btn btn-outline-secondary back-button">← Back to Restaurants</button>
+    <h1 class="text-center" id="restaurant-name">Loading...</h1>
+
+    <div class="card mt-4">
+        <div class="card-body">
+            <h4>Menu</h4>
+            <div id="menu-list">
+                <p class='text-muted'>Loading menu items...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    var urlParams = new URLSearchParams(window.location.search);
+    var restaurantId = urlParams.get("restaurant");
+
+    if (!restaurantId) {
+        document.getElementById("menu-list").innerHTML = "<p class='text-danger'>Error: No restaurant selected.</p>";
+        return;
+    }
+
+    var firebaseConfig = {
+        apiKey: "AIzaSyBvfgjOeBBU58vav3vTG_mgtpJwNoGOXuc",
+        authDomain: "eataboutown-e050e.firebaseapp.com",
+        projectId: "eataboutown-e050e",
+        storageBucket: "eataboutown-e050e.appspot.com",
+        messagingSenderId: "1013622079742",
+        appId: "1:1013622079742:web:22b54d500a7c262f55a5af"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    var db = firebase.firestore();
+
+    function loadMenu() {
+        var menuList = document.getElementById("menu-list");
+        menuList.innerHTML = "<p class='text-muted'>Loading menu items...</p>";
+
+        // Restoran bilgilerini al
+        db.collection("restaurants").doc(restaurantId).get().then(function(doc) {
+            if (doc.exists) {
+                document.getElementById("restaurant-name").textContent = doc.data().name;
+            } else {
+                document.getElementById("restaurant-name").textContent = "Restaurant Not Found";
+            }
+        });
+
+        // Menü listesini al
+        db.collection("restaurants").doc(restaurantId).collection("menu").get().then(function(querySnapshot) {
+            menuList.innerHTML = "";
+            if (querySnapshot.empty) {
+                menuList.innerHTML = "<p class='text-muted text-center'>No menu available.</p>";
+            } else {
+                querySnapshot.forEach(function(doc) {
+                    var dish = doc.data();
+                    var div = document.createElement("div");
+                    div.classList.add("menu-item");
+                    div.innerHTML = `<strong>${dish.name}</strong> - $${dish.price.toFixed(2)}`;
+                    menuList.appendChild(div);
+                });
+            }
+        }).catch(function(error) {
+            console.error("Error fetching menu:", error);
+            menuList.innerHTML = "<p class='text-danger'>Error loading menu.</p>";
+        });
+    }
+
+    loadMenu();
+
+    document.getElementById("back-button").addEventListener("click", function() {
+        window.history.back();
+    });
+});
+</script>
+
+</body>
+</html>

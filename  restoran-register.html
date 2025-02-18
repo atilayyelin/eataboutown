@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Restaurant</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <img src="logo.png" alt="Eataboutown Logo" class="logo">
+    <h1>Register Your Restaurant</h1>
+    <p>Fill in the details to get started</p>
+
+    <form id="restaurant-register-form">
+        <input type="text" id="restaurant-name" placeholder="Restaurant Name" required>
+        <input type="text" id="restaurant-address" placeholder="Restaurant Address" required>
+        <select id="restaurant-type" required>
+            <option value="">Select Restaurant Type</option>
+            <option value="French">French</option>
+            <option value="Italian">Italian</option>
+            <option value="American">American</option>
+            <option value="Asian">Asian</option>
+            <option value="Other">Other</option>
+        </select>
+        <input type="text" id="working-hours" placeholder="Working Hours (e.g. 9 AM - 11 PM)" required>
+        <input type="email" id="restaurant-email" placeholder="Email Address" required>
+        <input type="tel" id="restaurant-phone" placeholder="Phone Number" required>
+        <input type="password" id="restaurant-password" placeholder="Enter Password" required>
+        <input type="password" id="confirm-password" placeholder="Confirm Password" required>
+        <button type="submit" class="btn btn-submit">Register</button>
+    </form>
+
+    <p id="error-message" class="error-message"></p>
+
+    <p>Already have an account? <a href="restoran-giris.html">Login here</a></p>
+</div>
+
+<script type="module">
+    import { auth, db } from "./firebase-config.js";
+    import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    document.getElementById("restaurant-register-form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const name = document.getElementById("restaurant-name").value;
+        const address = document.getElementById("restaurant-address").value;
+        const type = document.getElementById("restaurant-type").value;
+        const hours = document.getElementById("working-hours").value;
+        const email = document.getElementById("restaurant-email").value;
+        const phone = document.getElementById("restaurant-phone").value;
+        const password = document.getElementById("restaurant-password").value;
+        const confirmPassword = document.getElementById("confirm-password").value;
+        const errorMessage = document.getElementById("error-message");
+
+        if (password !== confirmPassword) {
+            errorMessage.textContent = "Passwords do not match!";
+            return;
+        }
+
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            await setDoc(doc(db, "restaurants", user.uid), {
+                name: name,
+                address: address,
+                type: type,
+                workingHours: hours,
+                email: email,
+                phone: phone
+            });
+
+            alert("Restaurant Registered Successfully!");
+            window.location.href = "restoran-giris.html";
+        } catch (error) {
+            errorMessage.textContent = error.message;
+        }
+    });
+</script>
+
+</body>
+</html>

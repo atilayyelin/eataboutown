@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <img src="logo.png" alt="Eataboutown Logo" class="logo">
+    <h1>Sign Up</h1>
+    <p>Create a new account</p>
+
+    <form id="user-register-form">
+        <input type="text" id="user-name" placeholder="Enter Your Name" required>
+        <input type="email" id="user-email" placeholder="Enter Email" required>
+        <input type="password" id="user-password" placeholder="Enter Password" required>
+        <input type="password" id="confirm-password" placeholder="Confirm Password" required>
+        <button type="submit" class="btn btn-submit">Sign Up</button>
+    </form>
+
+    <p id="error-message" class="error-message"></p>
+
+    <p>Already have an account? <a href="uye-giris.html">Login here</a></p>
+</div>
+
+<!-- Firebase Bağlantıları (8.10.1) -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+<script>
+  // Firebase Konfigürasyonu
+  var firebaseConfig = {
+      apiKey: "AIzaSyBvfgjOeBBU58vav3vTG_mgtpJwNoGOXuc",
+      authDomain: "eataboutown-e050e.firebaseapp.com",
+      projectId: "eataboutown-e050e",
+      storageBucket: "eataboutown-e050e.appspot.com",
+      messagingSenderId: "1013622079742",
+      appId: "1:1013622079742:web:22b54d500a7c262f55a5af"
+  };
+
+  // Firebase Başlat
+  firebase.initializeApp(firebaseConfig);
+  var auth = firebase.auth();
+  var db = firebase.firestore();
+
+  document.getElementById("user-register-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      var name = document.getElementById("user-name").value;
+      var email = document.getElementById("user-email").value;
+      var password = document.getElementById("user-password").value;
+      var confirmPassword = document.getElementById("confirm-password").value;
+      var errorMessage = document.getElementById("error-message");
+
+      if (password !== confirmPassword) {
+          errorMessage.textContent = "Passwords do not match!";
+          return;
+      }
+
+      auth.createUserWithEmailAndPassword(email, password)
+          .then(function(userCredential) {
+              var user = userCredential.user;
+
+              // Firestore'a Kullanıcı Bilgilerini Kaydet
+              return db.collection("users").doc(user.uid).set({
+                  name: name,
+                  email: email,
+                  uid: user.uid
+              });
+          })
+          .then(function() {
+              alert("User Registered Successfully!");
+              window.location.href = "uye-giris.html";
+          })
+          .catch(function(error) {
+              errorMessage.textContent = error.message;
+          });
+  });
+</script>
+
+</body>
+</html>

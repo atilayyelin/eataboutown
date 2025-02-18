@@ -1,0 +1,287 @@
+/* 🌟 Genel Sayfa Ayarları */
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(to right, #ECE9E6, #FFFFFF);
+    color: #2C3E50;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    opacity: 0;
+    animation: fadeIn 1s ease-in-out forwards;
+}
+
+/* 🌟 Sayfa Açılış Animasyonu */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 🌟 Konteyner */
+.container {
+    width: 90%;
+    max-width: 900px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* 🌟 Kart Tasarımı (Animasyon Eklendi) */
+.card {
+    border-radius: 12px;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    padding: 25px;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    margin-bottom: 20px;
+    text-align: center;
+    opacity: 0;
+    animation: slideUp 0.8s ease-in-out forwards;
+}
+
+/* 🌟 Kartların Açılış Animasyonu */
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 🌟 Kart Hover (Üzerine Gelince Hafif Büyüme) */
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* 🌟 Buton Tasarımı */
+.btn {
+    display: inline-block;
+    width: 100%;
+    max-width: 320px;
+    padding: 12px 25px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 8px;
+    text-decoration: none;
+    margin: 12px auto;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    border: none;
+    opacity: 0;
+    animation: fadeIn 1.2s ease-in-out forwards;
+}
+
+/* 🌟 Buton Basılma Efekti */
+.btn:active {
+    transform: scale(0.95);
+}
+
+/* 🌟 Buton Renkleri */
+.btn-primary {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #388E3C;
+}
+
+.btn-warning {
+    background-color: #F1C40F;
+    color: white;
+}
+
+.btn-warning:hover {
+    background-color: #D4AC0D;
+}
+
+.btn-success {
+    background-color: #2ECC71;
+    color: white;
+}
+
+.btn-success:hover {
+    background-color: #27AE60;
+}
+
+.btn-danger {
+    background-color: #E74C3C;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #C0392B;
+}
+
+/* 🌟 Menü Listesi */
+.menu-item {
+    background-color: white;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    animation: fadeIn 1.5s ease-in-out forwards;
+}
+
+/* 🌟 Geri Butonu */
+.back-button {
+    display: inline-block;
+    padding: 12px 20px;
+    background-color: #2C3E50;
+    color: white;
+    border-radius: 6px;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    opacity: 0;
+    animation: fadeIn 1.8s ease-in-out forwards;
+}
+
+.back-button:hover {
+    background-color: #34495E;
+}
+
+/* 🌟 Mobil Uyum */
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+    }
+    .card {
+        padding: 15px;
+    }
+}/* 🌟 Form Alanını Düzenle */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+    margin: auto;
+}
+
+/* 🌟 Giriş Kutuları (Input) */
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    max-width: 350px;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    text-align: left;
+    transition: 0.3s ease-in-out;
+}
+
+/* 🌟 Giriş Kutularına Odaklanınca Daha Belirgin Hale Getir */
+input[type="email"]:focus,
+input[type="password"]:focus {
+    border: 1px solid #4CAF50;
+    outline: none;
+    box-shadow: 0px 0px 8px rgba(76, 175, 80, 0.5);
+}
+
+/* 🌟 Giriş Butonu */
+button {
+    width: 100%;
+    max-width: 350px;
+    padding: 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+/* 🌟 Butona Hover Efekti */
+button:hover {
+    background-color: #388E3C;
+}
+
+/* 🌟 Formu Ortala */
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 100vh;
+    width: 100%;
+}
+
+/* 🌟 Küçük Ekranlar İçin */
+@media (max-width: 600px) {
+    input[type="email"],
+    input[type="password"],
+    button {
+        width: 90%;
+    }
+}/* 🌟 Butonları Geliştir */
+.btn {
+    display: inline-block;
+    width: 100%;
+    max-width: 300px;
+    padding: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 8px;
+    text-decoration: none;
+    margin: 15px auto;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    border: none;
+    color: white;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* 🌟 Member Login Butonu */
+.btn-member {
+    background: linear-gradient(135deg, #4CAF50, #2ECC71);
+}
+
+.btn-member:hover {
+    background: linear-gradient(135deg, #388E3C, #27AE60);
+}
+
+/* 🌟 Restaurant Login Butonu */
+.btn-restaurant {
+    background: linear-gradient(135deg, #F39C12, #E67E22);
+}
+
+.btn-restaurant:hover {
+    background: linear-gradient(135deg, #D68910, #D35400);
+}
+
+/* 🌟 Alt Linkleri Daha Şık Yap */
+a {
+    font-size: 16px;
+    font-weight: bold;
+    color: #3498DB;
+    text-decoration: none;
+    transition: color 0.3s ease-in-out;
+}
+
+a:hover {
+    color: #2980B9;
+}

@@ -1,0 +1,18 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyBvfgjOeBBU58vav3vTG_mgtpJwNoGOXuc",
+    authDomain: "eataboutown-e050e.firebaseapp.com",
+    projectId: "eataboutown-e050e",
+    storageBucket: "eataboutown-e050e.appspot.com",
+    messagingSenderId: "1013622079742",
+    appId: "1:1013622079742:web:22b54d500a7c262f55a5af"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+export { auth, db };

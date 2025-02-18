@@ -1,0 +1,40 @@
+document.addEventListener("DOMContentLoaded", function () {
+    console.log("Dashboard script loaded!"); // Sayfanın JavaScript'i yüklediğini test etmek için
+
+    // View All Restaurants Butonu
+    const viewRestaurants = document.getElementById("view-restaurants-button");
+    if (viewRestaurants) {
+        viewRestaurants.addEventListener("click", function () {
+            console.log("View Restaurants Clicked");
+            window.location.href = "restaurants.html"; 
+        });
+    }
+
+    // View Favorites Butonu
+    const viewFavorites = document.getElementById("view-favorites-button");
+    if (viewFavorites) {
+        viewFavorites.addEventListener("click", function () {
+            console.log("View Favorites Clicked");
+            window.location.href = "favorites.html";
+        });
+    }
+
+    // See Offers Butonu
+    const seeOffers = document.getElementById("see-offers-button");
+    if (seeOffers) {
+        seeOffers.addEventListener("click", function () {
+            console.log("See Offers Clicked");
+            window.location.href = "offers.html";
+        });
+    }
+
+    // Logout Butonu
+    const logoutButton = document.getElementById("logout-button");
+    if (logoutButton) {
+        logoutButton.addEventListener("click", function () {
+            console.log("Logging out...");
+            alert("Logging out...");
+            window.location.href = "index.html";
+        });
+    }
+});
